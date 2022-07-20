@@ -1,5 +1,7 @@
 def run_commandlet_impl(ctx):
-    
+"""A generic build rule to run commandlets that will return the log output of the commandlet action"""    
+
+    # TODO figure out the name of the commandlet that is run and make sure that the generated files use that
     output_file = ctx.actions.declare_file("out_resave_packages.txt") # file that will be generated
     bat = ctx.actions.declare_file("run_resave_packages.bat") # file that will contain the command
     
@@ -31,6 +33,7 @@ def run_commandlet_impl(ctx):
     return DefaultInfo(files=depset([output_file]))
 
 def compile_blueprint_impl(ctx):
+    """Runs an unreal automation test that compiles the blueprint asset that is passed in and returns the log output that is generated"""
 
     # Get the name of the blueprint that we are processing
     blueprint_name = ctx.files.blueprint[0].basename.replace("." + ctx.files.blueprint[0].extension,"")
