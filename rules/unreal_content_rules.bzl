@@ -1,5 +1,4 @@
 def convert_data_validation_to_json_impl(ctx):
-"""Various tools while setting up the bazel thing"""
 
     output_file = ctx.actions.declare_file("out.json")
     input_file = ctx.attr.deps[0].files.to_list()[0]
