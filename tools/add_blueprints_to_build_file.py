@@ -21,15 +21,18 @@ compile_blueprint(
 
 output_data = []
 output_data.append("#### Generated actions! Do not modify bellow! ####")
-
+blueprints_added = []
 if "Blueprint" in data:
     for each_blueprint in data["Blueprint"]:
         if each_blueprint.lower().startswith("/game/"):
-            bp = each_blueprint.lower().replace("/game/", "//BazelTestProjectGame/Content:")
+            bp = each_blueprint.lower().replace("/game/", "//ProjectDawnGame/Content:")
             bp_name = bp.split(".")[-1]
+            
             stripped = bp.split(".", 1)[0] + ".uasset"
 
-            output_data.append(generate_build_action(bp_name, stripped))
+            if (bp_name not in blueprints_added):
+                output_data.append(generate_build_action(bp_name, stripped))
+                blueprints_added.append(bp_name)
 
 f = open(out, "w")
 f.writelines(output_data)
