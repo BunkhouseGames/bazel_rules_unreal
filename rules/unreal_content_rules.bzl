@@ -13,15 +13,16 @@ def convert_data_validation_to_json_impl(ctx):
     return DefaultInfo(files=depset([output_file]))
 
 def inject_blueprints_to_build_file_impl(ctx):
-    bat = ctx.actions.declare_file("out.bat")
-    
-    ctx.actions.write(
-        output = bat,
-        content = "call " + ctx.executable._build_tool.path,
-        is_executable = True,
-        )
-    
-    return DefaultInfo(executable=bat)
+    output_file = ctx.actions.declare_file("out.txt")
+
+    ctx.actions.run(
+        outputs = [output_file],
+        inputs = [],
+        executable = ctx.executable._build_tool,
+        arguments = [ctx.file.asset_list.path, output_file.path]
+    )
+
+    return DefaultInfo(files=depset([output_file]))
 
 
 convert_data_validation_to_json = rule( 
@@ -38,13 +39,12 @@ convert_data_validation_to_json = rule(
 
 inject_blueprints_to_build_file = rule(
     implementation = inject_blueprints_to_build_file_impl,
-    executable = True,
     attrs = {
-        "build_file": attr.label(allow_single_file = True),
         "_build_tool": attr.label(
             executable = True,
             cfg = "exec",
             default = "//:add_blueprint_to_build_file"
         ),
+        "asset_list" : attr.label(allow_single_file=True),
     }
 )

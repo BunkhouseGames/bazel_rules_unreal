@@ -38,10 +38,7 @@ def compile_blueprint_impl(ctx):
     output_file = ctx.actions.declare_file(blueprint_name + ".txt")
 
     # Declare the run file which will be executed
-    bat = ctx.actions.declare_file("run1.bat")
-
-    engine_path = ctx.executable.engine_executable.path.replace("/", "\\")
-    project_file_path = ctx.files.project_file[0].path.replace("/", "\\")
+    bat = ctx.actions.declare_file(blueprint_name + ".bat")
 
     # Path to unreal and the project file
     engine_plus_project_path = "\"" + ctx.executable.engine_executable.path.replace("/", "\\") + "\" " + "%cd%/" + ctx.files.project_file[0].path
