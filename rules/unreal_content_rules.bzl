@@ -1,6 +1,6 @@
-def convert_data_validation_to_json_impl(ctx):
+def get_project_overview_impl(ctx):
 
-    output_file = ctx.actions.declare_file("out.json")
+    output_file = ctx.actions.declare_file("project_overview.json")
     input_file = ctx.attr.deps[0].files.to_list()[0]
 
     ctx.actions.run(
@@ -13,20 +13,20 @@ def convert_data_validation_to_json_impl(ctx):
     return DefaultInfo(files=depset([output_file]))
 
 def inject_blueprints_to_build_file_impl(ctx):
-    output_file = ctx.actions.declare_file("out.txt")
+    output_file = ctx.actions.declare_file("generated_buildfile_blueprints.txt")
 
     ctx.actions.run(
         outputs = [output_file],
-        inputs = [],
+        inputs = [ctx.file.project_overview_file],
         executable = ctx.executable._build_tool,
-        arguments = [ctx.file.asset_list.path, output_file.path]
+        arguments = [ctx.attr.project_folder_name, ctx.file.project_overview_file.path, output_file.path]
     )
 
     return DefaultInfo(files=depset([output_file]))
 
 
-convert_data_validation_to_json = rule( 
-    implementation=convert_data_validation_to_json_impl,
+get_project_overview = rule( 
+    implementation=get_project_overview_impl,
     attrs={
         "deps" : attr.label_list(),
         "_build_tool": attr.label(
@@ -45,6 +45,7 @@ inject_blueprints_to_build_file = rule(
             cfg = "exec",
             default = "//:add_blueprint_to_build_file"
         ),
-        "asset_list" : attr.label(allow_single_file=True),
+        "project_folder_name" : attr.string(),
+        "project_overview_file" : attr.label(allow_single_file=True),
     }
 )
