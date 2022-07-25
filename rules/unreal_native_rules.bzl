@@ -1,6 +1,10 @@
 def run_commandlet_impl(ctx):
-    output_file = ctx.actions.declare_file("out_resave_packages.txt")  # file that will be generated
-    bat = ctx.actions.declare_file("run_resave_packages.bat")  # file that will contain the command
+
+    # TODO This might cause problems if we have the same commandlet with different arguments
+    commandlet_name = ctx.attr.commandlet
+
+    output_file = ctx.actions.declare_file(commandlet_name + ".txt")  # file that will be generated
+    bat = ctx.actions.declare_file(commandlet_name + ".bat")  # file that will contain the command
 
     # Fix the path to the bat file
     path_to_bat_file = bat.path.replace("/", "\\")
@@ -35,10 +39,10 @@ def compile_blueprint_impl(ctx):
     blueprint_name = ctx.files.blueprint[0].basename.replace("." + ctx.files.blueprint[0].extension, "")
 
     # Declare the output file that will contain the log
-    output_file = ctx.actions.declare_file(blueprint_name + ".txt")
+    output_file = ctx.actions.declare_file(ctx.attrs.unique_identifier + ".txt")
 
     # Declare the run file which will be executed
-    bat = ctx.actions.declare_file(blueprint_name + ".bat")
+    bat = ctx.actions.declare_file(ctx.attrs.unique_identifier + ".bat")
 
     # Path to unreal and the project file
     engine_plus_project_path = "\"" + ctx.executable.engine_executable.path.replace("/", "\\") + "\" " + "%cd%/" + ctx.files.project_file[0].path
@@ -84,6 +88,7 @@ compile_blueprint = rule(
         "blueprint": attr.label(
             allow_single_file = True,
         ),
+        "unique_identifier": attr.string(),
     },
 )
 
