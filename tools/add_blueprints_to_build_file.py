@@ -24,11 +24,11 @@ f = open(content_overview_file_path, "r")
 data = json.load(f)
 f.close()
 
-def generate_build_action(asset_name, asset_path):
+def generate_build_action(asset_identifier, asset_path):
 
     return f"""
 compile_blueprint(
-    name = "{asset_name}",
+    name = "{asset_identifier}",
     engine_executable = "unreal_executable",
     project_file = "unreal_project_file",
     blueprint = "{asset_path}")
@@ -40,14 +40,14 @@ blueprints_added = []
 
 if "Blueprint" in data:
     for each_blueprint in data["Blueprint"]:
-        if each_blueprint["Root"] != "Engine":
-            if each_blueprint["Root"] == "Game":
+        if each_blueprint["root"] != "Engine":
+            if each_blueprint["root"] == "Game":
                 
-                bazel_label_to_file = each_blueprint["Path"].split(".")[0] + ".uasset"
+                bazel_label_to_file = each_blueprint["path"].split(".")[0] + ".uasset"
                 bazel_label_to_file = "//" + bazel_label_to_file.replace("/Game/", project_root_folder_name + "/Content:")
                 print(bazel_label_to_file)
 
-                data = generate_build_action(each_blueprint["Name"], bazel_label_to_file)
+                data = generate_build_action(each_blueprint["asset_identifier"], bazel_label_to_file)
                 blueprints_added.append(data)
 
             # TODO add support for content in plugins ( We'll need to generate build files for the content files there)
