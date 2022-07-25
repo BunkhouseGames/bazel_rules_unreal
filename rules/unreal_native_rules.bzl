@@ -39,10 +39,10 @@ def compile_blueprint_impl(ctx):
     blueprint_name = ctx.files.blueprint[0].basename.replace("." + ctx.files.blueprint[0].extension, "")
 
     # Declare the output file that will contain the log
-    output_file = ctx.actions.declare_file(ctx.attrs.unique_identifier + ".txt")
+    output_file = ctx.actions.declare_file(ctx.attr.unique_identifier + ".txt")
 
     # Declare the run file which will be executed
-    bat = ctx.actions.declare_file(ctx.attrs.unique_identifier + ".bat")
+    bat = ctx.actions.declare_file(ctx.attr.unique_identifier + ".bat")
 
     # Path to unreal and the project file
     engine_plus_project_path = "\"" + ctx.executable.engine_executable.path.replace("/", "\\") + "\" " + "%cd%/" + ctx.files.project_file[0].path
