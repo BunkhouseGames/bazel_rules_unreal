@@ -31,8 +31,9 @@ compile_blueprint(
     name = "{asset_identifier}",
     engine_executable = "unreal_executable",
     project_file = "unreal_project_file",
-    blueprint = "{asset_path}"),
+    blueprint = "{asset_path}",
     unique_identifier = "{asset_identifier}",
+    )
     """
 
 output_data = []
