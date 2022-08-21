@@ -21,7 +21,7 @@ load("@rules_python//python:pip.bzl", "pip_install")
 pip_install(
     name = "pip_install_package",
     python_interpreter_target = interpreter,
-    requirements = "//tools:requirements.txt",
+    requirements = "//:requirements.txt",
 )
 
 http_archive(
