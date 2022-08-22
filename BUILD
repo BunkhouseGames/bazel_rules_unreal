@@ -6,9 +6,3 @@ pkg_zip(
     name = "SentinelCLI_Pak",
     srcs = ["//tools:SentinelCLI"],
 )
-
-py_binary(
-  name = "deploy_pak",
-  srcs = ["deploy_pak.py"],
-  deps = [requirement("Click")],
-)
