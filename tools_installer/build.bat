@@ -1,0 +1,1 @@
+pyinstaller tools_cli.py --onefile --name AT-Tools-CLI

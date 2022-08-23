@@ -1,6 +1,5 @@
 import sys
 import zipfile
-import os
 import shutil
 import subprocess
 
@@ -8,8 +7,10 @@ from pathlib import Path
 
 import click
 
-def _convert_output_string_to_absolute_path(output_string):
-    return Path(output_string.split(": ")[1].replace("[", "").replace("]", "")).absolute()
+
+@click.group()
+def cli():
+  pass
 
 def copy_files_to_target_directory(files, target_directory):
     if Path(target_directory).exists():
@@ -47,10 +48,10 @@ def get_output_path_for_build_action(action):
 
     return files
 
-@click.command()
+@cli.command()
 @click.option('--build_action', required=True)
 @click.option('--target_directory', required=True)
-def hello(build_action, target_directory):
+def deploy_tool_to_directory(build_action, target_directory):
     """Simple program that greets NAME for a total of COUNT times."""
 
     run_build_action(build_action)
@@ -58,4 +59,4 @@ def hello(build_action, target_directory):
     copy_files_to_target_directory(files, target_directory)
 
 if __name__ == '__main__':
-    hello()
+    cli()
