@@ -32,7 +32,7 @@ get_project_overview = rule(
         "_build_tool": attr.label(
             executable = True,
             cfg = "exec",
-            default = "//:convert_datavalidation_to_json"
+            default = "//tools:parse_data_validation"
         ),
     }
 )
@@ -43,7 +43,7 @@ inject_blueprints_to_build_file = rule(
         "_build_tool": attr.label(
             executable = True,
             cfg = "exec",
-            default = "//:add_blueprint_to_build_file"
+            default = "//tools:parse_data_validation"
         ),
         "project_folder_name" : attr.string(),
         "project_overview_file" : attr.label(allow_single_file=True),

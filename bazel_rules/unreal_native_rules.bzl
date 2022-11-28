@@ -16,7 +16,7 @@ def run_commandlet_impl(ctx):
     # Write the command into bat file
     ctx.actions.write(
         output = bat,
-        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_file.path + " -run=" + ctx.attr.commandlet + "\nEXIT /B",
+        content = engine_plus_project_path + " -abslog=" + "%cd%/" + output_file.path + " -run=" + ctx.attr.commandlet + " " + ctx.attr.arguments + "\nEXIT /B",
         is_executable = True,
     )
 
