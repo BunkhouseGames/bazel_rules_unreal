@@ -1,8 +1,9 @@
-load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
-load("@rules_python//python:defs.bzl", "py_binary")
-load("@pip_install_package//:requirements.bzl", "requirement")
+alias(
+    name = "unreal_project_file",
+    actual = "@unreal_project//ProjectDawnGame:ProjectDawnPreview.uproject",
+)
 
-pkg_zip(
-    name = "SentinelCLI_Pak",
-    srcs = ["//tools:SentinelCLI"],
+alias(
+    name = "unreal_executable",
+    actual = "@unreal_engine//:Engine/Binaries/Win64/UnrealEditor-cmd.exe",
 )

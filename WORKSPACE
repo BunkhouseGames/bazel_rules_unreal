@@ -1,6 +1,19 @@
 workspace(name = "bazel-rules-urneal-workspace")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# This is the path to a PRE-COMPILED unreal engine project
+new_local_repository(
+    name = "unreal_engine",
+    build_file = "//bazel_rules:ue5_engine.BUILD",
+    path = "" # MUST SET PATH TO UNREAL ENGINE
+    )
+
+# Add a path to the root of the project (Note that the project MUST contain a BUILD file)
+local_repository(
+    name = "unreal_project",
+    path = "" # MUST SET PATH TO PROJECT
+    )
+
 http_archive(
     name = "rules_python",
     sha256 = "9fcf91dbcc31fde6d1edb15f117246d912c33c36f44cf681976bd886538deba6",
@@ -23,14 +36,3 @@ pip_install(
     python_interpreter_target = interpreter,
     requirements = "//:requirements.txt",
 )
-
-http_archive(
-    name = "rules_pkg",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
-        "https://github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
-    ],
-    sha256 = "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
-)
-load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
-rules_pkg_dependencies()
